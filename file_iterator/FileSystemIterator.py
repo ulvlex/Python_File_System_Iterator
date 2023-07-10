@@ -37,12 +37,3 @@ class FileSystemIterator:
             return os.path.join(self.root, object)
         else:
             print(f"There is no such {object}")
-
-if __name__ == '__main__':
-    for item in FileSystemIterator("C:/Users/ASUS/Desktop/Занятия/СХД", False, False, None):
-        print(item)
-
-    print("################################")
-
-    print(next(FileSystemIterator("C:/Users/ASUS/Desktop/Занятия/СХД", False, False, None)))
-
