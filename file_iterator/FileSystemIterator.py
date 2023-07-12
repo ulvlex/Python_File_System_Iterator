@@ -16,24 +16,14 @@ class FileSystemIterator:
 
     def generate(self):
         for path, dirs, files in os.walk(self.root):
-            if self.only_files and not self.only_dirs:
-                for file in files:
-                    cur_path = self.check_pattern(file)
-                    yield cur_path
-            elif self.only_dirs and not self.only_files:
-                for directory in dirs:
-                    cur_path = self.check_pattern(directory)
-                    yield cur_path
-            else:
-                for file in files:
-                    cur_path = self.check_pattern(file)
-                    yield cur_path
-                for directory in dirs:
-                    cur_path = self.check_pattern(directory)
-                    yield cur_path
+            if self.only_files or (self.only_files is False and self.only_dirs is False):
+                yield from (self.check_pattern(file) for file in files)
+
+            if self.only_dirs or (self.only_files is False and self.only_dirs is False):
+                yield from (self.check_pattern(directory) for directory in dirs)
 
     def check_pattern(self, object):
         if self.pattern is None or self.pattern in object:
             return os.path.join(self.root, object)
         else:
-            print(f"There is no such {object}")
+            return None
